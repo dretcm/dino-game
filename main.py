@@ -8,16 +8,16 @@ screen = pygame.display.set_mode(WINDOW_SIZE)
 
 
 class Player:
-        subida = 10
-        bajada = 5
-        gravedad = 0.5     
-
-        limite = 150
-        altura = limite
-
         floor = True
         font = pygame.font.Font(None,30)
         recorrido = 0
+
+        width = 40
+        height = 40
+
+        const_up = 15
+        up = 0
+        down = 1
         
         def __init__(self,window_size):
                 self.window_size = window_size
@@ -27,21 +27,13 @@ class Player:
         
         def down_key(self,key):
                 if key == K_UP and not self.floor:
-                        self.altura = 0
-                        self.bajada = 5
+                        self.up = self.const_up
                         self.floor = True
                         
         def moving_player(self, screen):
                 if self.floor:
-                        if self.altura < self.limite:
-                                self.collider.y -= self.subida
-                                self.altura += self.subida
-                        else:
-                                self.bajada += self.gravedad 
-                                self.collider.y += self.bajada
-
-                        if self.window_size[1] - 20 < self.collider.y + 35:
-                                self.collider.y = self.window_size[1] - 59
+                        self.collider.y -= self.up
+                        self.up -= self.down
 
                 self.recorrido += 1
 
