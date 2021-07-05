@@ -19,8 +19,9 @@ class Player:
         up = 0
         down = 1
         
-        def __init__(self,window_size):
+        def __init__(self,window_size, floor_pos):
                 self.window_size = window_size
+                self.floor_pos = floor_pos
                 self.x, self.y = window_size[0]//2 - 200, window_size[1]//2 -20
                 self.collider = pygame.Rect(self.x,self.y,40,40)
                 self.img = pygame.transform.scale(pygame.image.load('player.png'), (40, 40))
@@ -34,7 +35,10 @@ class Player:
                 if self.floor:
                         self.collider.y -= self.up
                         self.up -= self.down
-
+                        
+                if self.collider.y + self.height > self.floor_pos:
+                        self.collider.y = self.floor_pos - self.height + 1
+                        
                 self.recorrido += 1
 
                 screen.blit(self.img, self.get_pos())
@@ -82,7 +86,7 @@ class Obstaculos:
                         while self.limit == self.ago:
                                 self.limit = random.choice(self.times)
                 
-player = Player(WINDOW_SIZE)
+player = Player(WINDOW_SIZE, WINDOW_SIZE[1]-20)
 obstaculos = Obstaculos(WINDOW_SIZE)
 
 floor = pygame.Rect(0,WINDOW_SIZE[1]-20,WINDOW_SIZE[0],50)
